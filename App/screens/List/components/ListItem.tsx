@@ -50,6 +50,8 @@ const styles = StyleSheet.create({
     width: screenWidth*0.5,
     height: 250,
     marginTop:5,
+    borderWidth: 5,
+    borderColor: '#3C1d3d',
     borderRadius: 20,
     borderTopLeftRadius: 140,
     borderTopRightRadius: 140,

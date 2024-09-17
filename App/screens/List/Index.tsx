@@ -5,6 +5,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import { collection, getDocs } from "firebase/firestore";
 import { fireDB } from "../../../firebasConfig";
 import ListItem from "./components/ListItem";
+import { useTranslation } from "react-i18next";
 
 interface Tale {
   title: string;
@@ -15,11 +16,12 @@ interface Tale {
 const Index: React.FC<{ navigation: any }> = ({ navigation }) => {
   const [tales, setTales] = useState<Tale[]>([]);
   const [loading, setLoading] = useState(true);
+  const {i18n} = useTranslation();
 
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchData = async (lang:string) => {
       try {
-        const querySnapshot = await getDocs(collection(fireDB, 'tales-tr'));
+        const querySnapshot = await getDocs(collection(fireDB, `tales-${lang}`));
         const data = querySnapshot.docs.map(doc => doc.data() as Tale);
         setTales(data);
         return data;
@@ -29,23 +31,21 @@ const Index: React.FC<{ navigation: any }> = ({ navigation }) => {
         setLoading(false);
       }
     };
-    fetchData();
+    fetchData(i18n.language);
   },[]);
 
 
   if(loading) {
     return(
-      <LinearGradient 
-      colors={["#121C2A", "#3C1D3D"]}
-      style={{justifyContent:'center', alignItems:'center',flex:1}}>
-              <ActivityIndicator size='large' color='#E9CEAF'/>
+      <LinearGradient colors={["#121C2A", "#3C1D3D"]} style={styles.loading}>
+          <ActivityIndicator size='large' color='#E9CEAF'/>
       </LinearGradient>
 
     )
   }
 
   return (
-    <LinearGradient colors={["#121C2A", "#3C1D3D"]} style={{ flex: 1, justifyContent: 'center' }}>
+    <LinearGradient colors={["#121C2A", "#3C1D3D"]} style={styles.gradient}>
       <SafeAreaView style={styles.container}>
         <FlatList
           style={styles.list}
@@ -60,13 +60,22 @@ const Index: React.FC<{ navigation: any }> = ({ navigation }) => {
   );
 };
 const styles = StyleSheet.create({
+  gradient:{
+    flex: 1,
+    justifyContent: 'center',
+  },
   container: {
     marginTop: 40,
     width: '100%',
   },
   list:{
      width: "100%", 
-     height: "90%",
+     height: "95%",
+  },
+  loading:{
+    justifyContent: 'center',
+    alignItems: 'center',
+    flex:1,
   }
 });
 

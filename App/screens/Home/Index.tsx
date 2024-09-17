@@ -1,11 +1,34 @@
-import { Image, StyleSheet, Text, View } from "react-native";
+import { Image, StyleSheet, Switch, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { LinearGradient } from "expo-linear-gradient";
 import { StatusBar } from "expo-status-bar";
 import AnimatedButton from "../../components/AnimatedButton";
 import { FontAwesome6 } from "@expo/vector-icons";
+import { useLayoutEffect, useState } from "react";
+import * as NavigationBar from "expo-navigation-bar";
+import { useTranslation } from "react-i18next";
+import * as Localization from 'expo-localization';
+import "../../locales/i18n";
 
 const Index: React.FC<{ navigation: any }> = ({ navigation }) => {
+  const {t, i18n} = useTranslation();
+  const [isEnabled, setIsEnabled] = useState(false);
+
+  const toggleSwitch = () => {
+    setIsEnabled(prev => !prev);
+    i18n.changeLanguage(isEnabled? 'en':'tr');
+  };
+
+  useLayoutEffect(() => {
+    NavigationBar.setBackgroundColorAsync('#3C1D3D');
+    const locales = Localization.getLocales();
+    const userLanguage = locales[0]?.languageCode;
+    setIsEnabled(userLanguage === 'tr');
+    return () => {
+      NavigationBar.setBackgroundColorAsync('#f0eae3');
+    }
+  },[]);
+
   return (
     <LinearGradient style={{ flex: 1 }} colors={["#121C2A", "#3C1D3D"]}>
       <SafeAreaView style={styles.container}>
@@ -16,13 +39,10 @@ const Index: React.FC<{ navigation: any }> = ({ navigation }) => {
             style={styles.image}
           />
         </View>
-        <Text style={styles.title}>Bedtime Stories</Text>
-        <Text style={styles.text}>
-          Lorem lorem lorem lorem ipsum lorem ipsum lorem ipsum lorem ipsum
-          story lorem ipsum story
-        </Text>
+        <Text style={styles.title}>{t('homeTitle')}</Text>
+        <Text style={styles.text}>{t('homeText')}</Text>
         <AnimatedButton
-          title="Go to Stories"
+          title={t('homeButton')}
           backgroundColor="#E9CEAF"
           marginVertical={40}
           color="#3C1D3D"
@@ -31,6 +51,15 @@ const Index: React.FC<{ navigation: any }> = ({ navigation }) => {
           onPress={() => navigation.navigate("List")}
           icon={<FontAwesome6 name="wand-magic-sparkles" size={26} color={'#3C1D3D'}/>}
         />
+                <View style={styles.switchContainer}>
+        <Switch 
+        trackColor={{false: '#E9CEAF', true: '#E9CEAF'}}
+        thumbColor={isEnabled? '#121C2A': '#121C2A'}
+        onValueChange={toggleSwitch}
+        value={isEnabled}
+        />
+        <Text style={styles.switchText}>{i18n.language}</Text>
+        </View>
       </SafeAreaView>
     </LinearGradient>
   );
@@ -71,13 +100,25 @@ const styles = StyleSheet.create({
     color: "#E9CEAF",
   },
   text: {
-    textAlign: "center",
-    width: "60%",
+    textAlign: "justify",
+    width: "70%",
     marginTop: 20,
     fontSize: 16,
     fontFamily: "QuicksandBold",
     color: "#5A4B6E",
   },
+  switchContainer:{
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    width:'100%',
+  },
+  switchText:{
+    color: '#E9CEAF',
+    fontSize: 16,
+    marginLeft:5,
+    fontFamily: "QuicksandBold",
+  }
 });
 
 export default Index;

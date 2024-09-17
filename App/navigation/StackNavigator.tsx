@@ -5,11 +5,13 @@ import { getHeaderAlignment, getHeaderFontSize } from "../utils/headerUtils";
 import HomeScreen from "../screens/Home/Index";
 import StoryDetailScreen from "../screens/Story/Index";
 import StoryListScreen from "../screens/List/Index";
+import { useTranslation } from "react-i18next";
 
 
 const Stack = createNativeStackNavigator();
 
 const StackNavigator: React.FC = () => {
+  const {t} = useTranslation();
   return (
     <NavigationContainer>
       <Stack.Navigator>
@@ -25,7 +27,7 @@ const StackNavigator: React.FC = () => {
             headerTitleAlign: "center",
             headerTransparent: true,
             headerTitleStyle: { fontFamily: "MerriweatherBold", fontSize: 24 },
-            headerTitle: "Stories",
+            headerTitle: t('stories'),
             headerTintColor: "#E9CEAF",
           }}
         />

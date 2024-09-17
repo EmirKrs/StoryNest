@@ -1,15 +1,25 @@
-import { Text, StyleSheet, ImageBackground, ScrollView } from "react-native";
-import React from "react";
+import { Text, StyleSheet, ScrollView } from "react-native";
+import {useLayoutEffect } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import AnimatedButton from "../../components/AnimatedButton";
 import { FontAwesome6 } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
+import * as NavigationBar from "expo-navigation-bar";
+import { useTranslation } from "react-i18next";
 
 const Index: React.FC<{ navigation: any; route: any }> = ({ navigation, route}) => {
   const  item  = (route.params as { item: { title: string, content:string } }).item;
 
   const firstLetter = item.content.charAt(0);
   const restOfText = item.content.slice(1);
+  const {t} = useTranslation();
+
+  useLayoutEffect(() => {
+    NavigationBar.setBackgroundColorAsync('#f0eae3');
+    return () => {
+      NavigationBar.setBackgroundColorAsync('#3C1D3D');
+    }
+  },[]);
 
   return (
     <LinearGradient style={{ flex: 1 }} colors={["#E9CEAF", "#f0eae3"]}>
@@ -25,7 +35,7 @@ const Index: React.FC<{ navigation: any; route: any }> = ({ navigation, route}) 
 
           <AnimatedButton
            width='80%' 
-           title="Goodnight" 
+           title={t('goodnightButton')} 
            backgroundColor="#3C1D3D"
            onPress={() => navigation.navigate('List')} 
            icon={<FontAwesome6 name="moon" size={22} color={'#fff'}/>}/>
