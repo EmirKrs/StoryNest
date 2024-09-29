@@ -1,4 +1,4 @@
-import { StyleSheet, FlatList, ActivityIndicator, View } from "react-native";
+import { StyleSheet, FlatList, ActivityIndicator } from "react-native";
 import React, { useEffect, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { LinearGradient } from "expo-linear-gradient";
@@ -40,9 +40,8 @@ const Index: React.FC<{ navigation: any }> = ({ navigation }) => {
       <LinearGradient colors={["#121C2A", "#3C1D3D"]} style={styles.loading}>
           <ActivityIndicator size='large' color='#E9CEAF'/>
       </LinearGradient>
-
     )
-  }
+  };
 
   return (
     <LinearGradient colors={["#121C2A", "#3C1D3D"]} style={styles.gradient}>
@@ -51,9 +50,7 @@ const Index: React.FC<{ navigation: any }> = ({ navigation }) => {
           style={styles.list}
           data={tales}
           keyExtractor={(item) => item.title.toString()}
-          renderItem={({ item }) => (
-            <ListItem navigation={navigation} item={item} />
-          )}
+          renderItem={({ item }) => (<ListItem navigation={navigation} item={item} />)}
         />
       </SafeAreaView>
     </LinearGradient>

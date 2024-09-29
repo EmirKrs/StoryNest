@@ -3,8 +3,6 @@ import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 import { useEffect } from "react";
 
-SplashScreen.preventAutoHideAsync();
-
 export default function App() {
   const [loaded, error] = useFonts({
     PacificoRegular: require("./assets/fonts/Pacifico-Regular.ttf"),
@@ -19,7 +17,13 @@ export default function App() {
   });
 
   useEffect(() => {
-    SplashScreen.hideAsync();
+    async function prepare() {
+      await SplashScreen.preventAutoHideAsync();
+      if (loaded || error) {
+        await SplashScreen.hideAsync();
+      }
+    }
+    prepare();
   }, [loaded, error]);
 
 

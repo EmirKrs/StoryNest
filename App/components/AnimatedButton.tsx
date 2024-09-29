@@ -33,14 +33,11 @@ const AnimatedButton: React.FC<ButtonProps> = ({ title, onPress, backgroundColor
   }, [scaleAnim]);
 
   return (
-    <Animated.View
-      style={[{ width,marginVertical }, { transform: [{ scale: scaleAnim }] }]}
-    >
+    <Animated.View style={[{ width,marginVertical }, { transform: [{ scale: scaleAnim }] }]}>
       <TouchableOpacity
         style={[styles.buttonContent, { backgroundColor }]}
         activeOpacity={0.8}
-        onPress={onPress}
-      >
+        onPress={onPress}>
         <Text style={[styles.text, { color, fontSize }]}>{title}</Text>
         {icon && <View style={styles.icon}>{icon}</View>}
       </TouchableOpacity>
